@@ -1,3 +1,4 @@
+import { generateUUID } from '../../utils/uuid'
 import { CREATE_EXPENSE, UPDATE_EXPENSE, DELETE_EXPENSE } from '../actions/actions-types'
 
 const initialState = {
@@ -9,6 +10,8 @@ export const expensesReducer = (state = initialState, { type, transaction }) => 
 
 	switch (type) {
 		case CREATE_EXPENSE:
+			transaction.id = generateUUID()
+
 			return {
 				expenses: expenses.concat([transaction])
 			}

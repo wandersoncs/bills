@@ -1,7 +1,7 @@
 import React from 'react'
 import { View, Text, StyleSheet } from 'react-native'
 
-const Transaction = ({ value, description, date, received }) => {
+const Transaction = ({ value, description, date, done, type }) => {
 	return (
 		<View style={styles.container}>
 			<View style={styles.icon}></View>
@@ -18,9 +18,7 @@ const Transaction = ({ value, description, date, received }) => {
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1,
-		backgroundColor: '#eee',
-		borderRadius: 5
+		flex: 1
 	},
 	description: {
 		fontSize: 12,
@@ -33,3 +31,5 @@ const styles = StyleSheet.create({
 	icon: {},
 	action: {},
 })
+
+export default Transaction

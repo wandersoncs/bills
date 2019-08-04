@@ -4,7 +4,9 @@ import {
 	DELETE_EXPENSE,
 	DELETE_INCOME,
 	UPDATE_EXPENSE,
-	UPDATE_INCOME
+	UPDATE_INCOME,
+	SIGN_IN_USER,
+	SIGN_OUT_USER
 } from './actions-types'
 
 export const createExpense = transaction => ({
@@ -35,4 +37,14 @@ export const updateIncome = transaction => ({
 export const deleteIncome = transaction => ({
 	type: DELETE_INCOME,
 	transaction
+})
+
+export const signInUser = user => ({
+	type: SIGN_IN_USER,
+	user
+})
+
+export const signOutUser = user => ({
+	type: SIGN_OUT_USER,
+	user
 })

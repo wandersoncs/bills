@@ -1,15 +1,19 @@
 import Dashboard from './Dashboard'
 import Expenses from './Expenses'
 import Incomes from './Incomes'
-import Login from './Login'
+import SignIn from './SignIn'
 import Splash from './Splash'
-import Home from './Home'
+import NewExpense from './NewExpense'
+import NewIncome from './NewIncome'
+import SignUp from './SignUp'
 
 export {
 	Dashboard,
 	Expenses,
-	Home,
 	Incomes,
-	Login,
-	Splash
+	NewExpense,
+	NewIncome,
+	Splash,
+	SignIn,
+	SignUp
 }

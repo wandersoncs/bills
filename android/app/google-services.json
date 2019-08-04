@@ -1,0 +1,40 @@
+{
+  "project_info": {
+    "project_number": "13124247136",
+    "firebase_url": "https://bills-1000.firebaseio.com",
+    "project_id": "bills-1000",
+    "storage_bucket": "bills-1000.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:13124247136:android:7f3863c473947db7",
+        "android_client_info": {
+          "package_name": "com.bills"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "13124247136-741uf3659t6feqgv0k44fr8bviirt98o.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDNhXToQHTQ_Q5-pKDDRzodW7F87Ic5O0A"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "13124247136-741uf3659t6feqgv0k44fr8bviirt98o.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
