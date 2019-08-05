@@ -6,6 +6,7 @@ import Splash from './Splash'
 import NewExpense from './NewExpense'
 import NewIncome from './NewIncome'
 import SignUp from './SignUp'
+import Home from './Home'
 
 export {
 	Dashboard,
@@ -15,5 +16,6 @@ export {
 	NewIncome,
 	Splash,
 	SignIn,
-	SignUp
+	SignUp,
+	Home
 }

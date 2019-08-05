@@ -3,7 +3,7 @@ import { expensesReducer } from './expensesReducer'
 import { incomesReducer } from './incomesReducer'
 import { userReducer } from './userReducer'
 
-export const Reducers = combineReducers({
+export const reducers = combineReducers({
 	expensesReducer,
 	incomesReducer,
 	userReducer

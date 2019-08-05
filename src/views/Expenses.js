@@ -1,38 +1,48 @@
-import React from 'react'
-import { Text, View, FlatList, StyleSheet, ScrollView } from 'react-native'
+import React, { useEffect } from 'react'
+import { Text, View, FlatList, StyleSheet, ScrollView, StatusBar } from 'react-native'
 import { useSelector } from 'react-redux'
-import { scale } from 'react-native-size-matters'
+import ActionButton from 'react-native-action-button'
 import Transaction from '../components/Transaction'
-import { generateUUID } from '../utils/uuid'
 
-const Dashboard = () => {
+const Incomes = ({ navigation }) => {
 	const expenses = useSelector(store => store.expensesReducer.expenses)
+
+	const editTransaction = item => {
+		navigation.navigate('NewExpense', { item })
+	}
 
 	const renderItem = (item) => (
 		<Transaction
-			key={item.uuid}
+			key={item.id}
+			id={item.id}
 			date={item.date}
 			description={item.description}
 			done={item.paid}
-			type='expense'
+			type={item.type}
 			value={item.value}
+			onEdit={editTransaction}
 		/>
 	)
 
-	const renderItems = () => {
-		return expenses.map(item => renderItem({ ...item, uuid: generateUUID() }))
+	const renderItems = items => {
+		return items.map(item => renderItem(item))
 	}
 
 	return (
 		<View style={styles.container}>
-			<Text>Gastos</Text>
 
 			<ScrollView style={styles.scrollview}>
-				{renderItems()}
+				{renderItems(expenses)}
 			</ScrollView>
+
+			<ActionButton buttonColor='#D84315' onPress={() => navigation.navigate('NewExpense')} />
 		</View>
 	)
 }
+
+Incomes.navigationOptions = ({
+	title: 'Despesas'
+})
 
 const styles = StyleSheet.create({
 	container: {
@@ -40,8 +50,7 @@ const styles = StyleSheet.create({
 		justifyContent: 'center'
 	},
 	scrollview: {
-		paddingHorizontal: 20
 	}
 })
 
-export default Dashboard
+export default Incomes

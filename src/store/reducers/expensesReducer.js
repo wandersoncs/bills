@@ -1,33 +1,43 @@
-import { generateUUID } from '../../utils/uuid'
-import { CREATE_EXPENSE, UPDATE_EXPENSE, DELETE_EXPENSE } from '../actions/actions-types'
+import {
+	CREATE_EXPENSE,
+	UPDATE_EXPENSE,
+	DELETE_EXPENSE,
+	LOAD_EXPENSES
+} from '../actions/actions-types'
 
 const initialState = {
-	expenses: []
+	expenses: [],
+	loading: true
 }
 
-export const expensesReducer = (state = initialState, { type, transaction }) => {
+export const expensesReducer = (state = initialState, { type, payload }) => {
 	const expenses = state.expenses
 
 	switch (type) {
-		case CREATE_EXPENSE:
-			transaction.id = generateUUID()
-
+		case LOAD_EXPENSES:
 			return {
-				expenses: expenses.concat([transaction])
+				expenses: payload,
+				loading: false
+			}
+		case CREATE_EXPENSE:
+			return {
+				expenses: expenses.concat([payload]),
+				loading: false
 			}
 		case UPDATE_EXPENSE:
-			const index = expenses.findIndex(({ id }) => id === transaction.id)
+			const index = expenses.findIndex(({ id }) => id === payload.id)
 
 			if (index === -1) return { ...state }
 
-			expenses[index] = transaction
-
+			expenses[index] = payload
 			return {
-				expenses
+				expenses: [].concat(expenses),
+				loading: false
 			}
 		case DELETE_EXPENSE:
 			return {
-				expenses: expenses.filter(({ id }) => id !== transaction.id)
+				expenses: expenses.filter(({ id }) => id !== payload.id),
+				loading: false
 			}
 		default:
 			return { ...state }

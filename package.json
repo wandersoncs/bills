@@ -7,8 +7,11 @@
     "test": "jest"
   },
   "dependencies": {
+    "art": "^0.10.3",
+    "d3": "^5.9.7",
     "lodash": "^4.17.15",
     "moment": "2.24.0",
+    "number-locale-string": "^0.2.1",
     "react": "16.8.6",
     "react-native": "0.60.4",
     "react-native-action-button": "^2.8.5",

@@ -4,13 +4,9 @@ import {
 	Text,
 	StyleSheet,
 	TextInput,
-	TouchableHighlight,
-	Image
+	TouchableHighlight
 } from 'react-native'
-import Icon from 'react-native-vector-icons/FontAwesome5'
 import firebase from 'react-native-firebase'
-import { ScaledSheet } from 'react-native-size-matters'
-// import * as Animatable from 'react-native-animatable'
 
 const SignIn = ({ navigation }) => {
 	const [email, setEmail] = useState('')
@@ -22,9 +18,7 @@ const SignIn = ({ navigation }) => {
 		try {
 			const credencial = await firebase.auth().signInWithEmailAndPassword(email, password)
 
-
-			
-			navigation.navigate('Home')
+			navigation.navigate('Main')
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/invalid-email':
@@ -90,7 +84,7 @@ SignIn.navigationOptions = {
 	header: null
 }
 
-const styles = ScaledSheet.create({
+const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		flexGrow: 1,

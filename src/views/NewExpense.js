@@ -1,19 +1,17 @@
-import React, { useState, useRef } from 'react'
-import { Text, View, StyleSheet, TextInput, DatePickerAndroid, Switch, TouchableHighlight } from 'react-native'
+import React, { useEffect, useState, useRef } from 'react'
+import { Text, View, StyleSheet, TextInput, DatePickerAndroid, Switch, TouchableHighlight, Button } from 'react-native'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
-import { withNavigation } from 'react-navigation'
 import { TextInputMask } from 'react-native-masked-text'
-import firebase from 'react-native-firebase'
-import { generateUUID } from '../utils/uuid'
-import { createExpense } from '../store/actions'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import { createExpense, updateExpense, deleteExpense } from '../store/actions/expenses-actions'
 
 const NewExpense = ({ navigation }) => {
 	const [description, setDescription] = useState('')
 	const [value, setValue] = useState()
 	const [date, setDate] = useState(Date.now())
 	const [paid, setPaid] = useState(false)
-
+	const [id, setId] = useState()
 	const valueRef = useRef()
 
 	const dispatch = useDispatch()
@@ -28,26 +26,42 @@ const NewExpense = ({ navigation }) => {
 		}
 	}
 
+	onDelete = async (id) => {
+		await dispatch(deleteExpense(id))
+
+		navigation.goBack()
+	}
+
 	onSave = async () => {
 		const expense = {
 			description,
-			value: valueRef.current.getRawValue() || 0,
+			value: isNaN(value) ? (valueRef.current.getRawValue() || 0) : value,
 			date,
-			paid,
-			id: generateUUID(),
-			userId: ''
+			paid
 		}
 
-		try {
-			await firebase.firestore().collection('expenses').add(expense)
-
-			dispatch(createExpense(expense))
-
-			navigation.navigate('Dashboard')
-		} catch (error) {
-			console.log(error)
+		if (id) {
+			await dispatch(updateExpense(id, expense))
+		} else {
+			await dispatch(createExpense(expense))
 		}
+
+		navigation.goBack()
 	}
+
+	useEffect(() => {
+		const item = navigation.getParam('item', null)
+
+		if (item) {
+			setId(item.id)
+			setDescription(item.description)
+			setValue(item.value)
+			setPaid(item.done)
+			setDate(item.date)
+		}
+
+		navigation.setParams({ onDelete })
+	}, [])
 
 	return (
 		<View style={styles.container}>
@@ -58,7 +72,7 @@ const NewExpense = ({ navigation }) => {
 
 			<Text style={styles.label}>Valor</Text>
 			<TextInputMask
-				style={styles.input}
+				style={[styles.input, styles.inputValue]}
 				type='money'
 				options={{ maskType: 'BRL', separator: ',', delimiter: '.', unit: 'R$ ' }}
 				value={value}
@@ -66,6 +80,7 @@ const NewExpense = ({ navigation }) => {
 				onChangeText={value => setValue(value)}
 				placeholder='Ex.: R$ 1,00'
 				ref={valueRef}
+				underlineColorAndroid='#999'
 			/>
 
 			<Text style={styles.label}>Data</Text>
@@ -87,15 +102,27 @@ const NewExpense = ({ navigation }) => {
 	)
 }
 
-NewExpense.navigationOptions = {
-	title: 'Novo Gasto'
+NewExpense.navigationOptions = ({ navigation }) => {
+	const item = navigation.getParam('item', null)
+	const deleteItem = navigation.getParam('onDelete')
+
+	const headerRight = item
+		? <Icon style={styles.headerButton} name='trash-alt' color='#666' size={20} onPress={() => deleteItem(item.id)} />
+		: undefined
+
+	return {
+		title: item ? 'Editar' : 'Nova Despesa',
+		headerTitleStyle: {
+			fontFamily: 'Roboto'
+		},
+		headerRight
+	}
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
-		paddingTop: 40
+		padding: 20
 	},
 	label: {
 		fontSize: 18,
@@ -109,7 +136,10 @@ const styles = StyleSheet.create({
 	},
 	inputDate: {
 		borderBottomColor: '#999',
-		borderBottomWidth: 1
+		borderBottomWidth: 1.1
+	},
+	inputValue: {
+		marginTop: 0
 	},
 	switchContainer: {
 		flexDirection: 'row',
@@ -145,6 +175,11 @@ const styles = StyleSheet.create({
 		fontFamily: 'Roboto',
 		fontSize: 18
 	},
+	headerButton: {
+		paddingHorizontal: 16,
+		height: '100%',
+		textAlignVertical: 'center'
+	}
 })
 
-export default withNavigation(NewExpense)
+export default NewExpense

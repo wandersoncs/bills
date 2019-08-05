@@ -1,18 +1,17 @@
-import React, { useState, useRef } from 'react'
+import React, { useEffect, useState, useRef } from 'react'
 import { Text, View, StyleSheet, TextInput, DatePickerAndroid, Switch, TouchableHighlight } from 'react-native'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
-import { withNavigation } from 'react-navigation'
 import { TextInputMask } from 'react-native-masked-text'
-import firebase from 'react-native-firebase'
-import { generateUUID } from '../utils/uuid'
-import { createIncome } from '../store/actions'
+import Icon from 'react-native-vector-icons/FontAwesome5'
+import { createIncome, updateIncome, deleteIncome } from '../store/actions/incomes-actions'
 
 const NewIncome = ({ navigation }) => {
 	const [description, setDescription] = useState('')
 	const [value, setValue] = useState('')
 	const [date, setDate] = useState(Date.now())
 	const [received, setReceived] = useState(false)
+	const [id, setId] = useState()
 
 	const valueRef = useRef()
 
@@ -28,37 +27,53 @@ const NewIncome = ({ navigation }) => {
 		}
 	}
 
+	onDelete = async (id) => {
+		await dispatch(deleteIncome(id))
+
+		navigation.goBack()
+	}
+
 	onSave = async () => {
 		const income = {
 			description,
-			value: valueRef.current.getRawValue() || 0,
+			value: isNaN(value) ? (valueRef.current.getRawValue() || 0) : value,
 			date,
-			received,
-			id: generateUUID(),
-			userId: ''
+			received
 		}
 
-		try {
-			await firebase.firestore().collection('incomes').add(income)
-
-			dispatch(createIncome(income))
-
-			navigation.navigate('Dashboard')
-		} catch (error) {
-			console.log(error)
+		if (id) {
+			await dispatch(updateIncome(id, income))
+		} else {
+			await dispatch(createIncome(income))
 		}
+
+		navigation.goBack()
 	}
+
+	useEffect(() => {
+		const item = navigation.getParam('item', null)
+
+		if (item) {
+			setId(item.id)
+			setDescription(item.description)
+			setValue(item.value)
+			setReceived(item.done)
+			setDate(item.date)
+		}
+
+		navigation.setParams({ onDelete })
+	}, [])
 
 	return (
 		<View style={styles.container}>
 			<Text style={styles.label}>Descrição</Text>
 			<TextInput value={description} onChangeText={description => setDescription(description)}
-				placeholder='Ex.: Roupas' autoCapitalize='sentences' underlineColorAndroid='#999' style={styles.input}
+				placeholder='Ex.: Salário' autoCapitalize='sentences' underlineColorAndroid='#999' style={styles.input}
 			/>
 
 			<Text style={styles.label}>Valor</Text>
 			<TextInputMask
-				style={styles.input}
+				style={[styles.input, styles.inputValue]}
 				type='money'
 				options={{ maskType: 'BRL', separator: ',', delimiter: '.', unit: 'R$ ' }}
 				value={value}
@@ -66,6 +81,7 @@ const NewIncome = ({ navigation }) => {
 				onChangeText={value => setValue(value)}
 				placeholder='Ex.: R$ 1,00'
 				ref={valueRef}
+				underlineColorAndroid='#999'
 			/>
 
 			<Text style={styles.label}>Data</Text>
@@ -87,15 +103,27 @@ const NewIncome = ({ navigation }) => {
 	)
 }
 
-NewIncome.navigationOptions = {
-	title: 'Nova Receita'
+NewIncome.navigationOptions = ({ navigation }) => {
+	const item = navigation.getParam('item', null)
+	const deleteItem = navigation.getParam('onDelete')
+
+	const headerRight = item
+		? <Icon style={styles.headerButton} name='trash-alt' color='#666' size={20} onPress={() => deleteItem(item.id)} />
+		: undefined
+
+	return {
+		title: item ? 'Editar' : 'Nova Receita',
+		headerTitleStyle: {
+			fontFamily: 'Roboto'
+		},
+		headerRight
+	}
 }
 
 const styles = StyleSheet.create({
 	container: {
 		flex: 1,
-		padding: 20,
-		paddingTop: 40
+		padding: 20
 	},
 	label: {
 		fontSize: 18,
@@ -109,7 +137,10 @@ const styles = StyleSheet.create({
 	},
 	inputDate: {
 		borderBottomColor: '#999',
-		borderBottomWidth: 1
+		borderBottomWidth: 1.1
+	},
+	inputValue: {
+		marginTop: 0
 	},
 	switchContainer: {
 		flexDirection: 'row',
@@ -140,11 +171,16 @@ const styles = StyleSheet.create({
 		width: '80%'
 	},
 	buttonText: {
+		color: 'white',
 		fontWeight: 'bold',
 		fontFamily: 'Roboto',
-		fontSize: 18,
-		color: '#FFF'
+		fontSize: 18
 	},
+	headerButton: {
+		paddingHorizontal: 16,
+		height: '100%',
+		textAlignVertical: 'center'
+	}
 })
 
-export default withNavigation(NewIncome)
+export default NewIncome

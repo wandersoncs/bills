@@ -1,35 +1,53 @@
 import React from 'react'
-import { View, Text, StyleSheet } from 'react-native'
+import { View, Text, StyleSheet, TouchableHighlight } from 'react-native'
+import moment from 'moment'
+import numberLocale from 'number-locale-string'
+import { EXPENSE } from '../constants'
 
-const Transaction = ({ value, description, date, done, type }) => {
-	return (
+const Transaction = ({ value, description, done, date, type, onEdit, id }) => (
+	<TouchableHighlight underlayColor='#ddd' onPress={() => onEdit({ id, type, value, description, done, date })}>
 		<View style={styles.container}>
-			<View style={styles.icon}></View>
-
 			<View>
 				<Text style={styles.description}>{description}</Text>
-				<Text style={styles.value}>{value}</Text>
+				<Text>{moment(date).format('DD/MM/YYYY')}</Text>
 			</View>
+			<View style={styles.flexEnd}>
+				<Text style={styles.value}>
+					{numberLocale.toLocaleString(value, 'pt-BR', { style: 'currency', currency: 'brl', minimumFractionDigits: 2 })}
+				</Text>
+				{type === EXPENSE
+					? <Text style={styles.status}>{done ? 'Pago' : 'Não foi pago'}</Text>
+					: <Text style={styles.status}>{done ? 'Recebido' : 'Não foi recebido'}</Text>
+				}
 
-			<View style={styles.action}></View>
+			</View>
 		</View>
-	)
-}
+	</TouchableHighlight>
+)
 
 const styles = StyleSheet.create({
 	container: {
-		flex: 1
+		flex: 1,
+		paddingVertical: 8,
+		paddingHorizontal: 20,
+		flexDirection: 'row',
+		justifyContent: 'space-between'
 	},
 	description: {
-		fontSize: 12,
-		color: '#000'
+		fontSize: 16,
+		color: '#111'
 	},
 	value: {
-		fontSize: 14,
-		color: '#777'
+		fontSize: 16,
+		color: '#000'
 	},
-	icon: {},
-	action: {},
+	flexEnd: {
+		alignItems: 'flex-end'
+	},
+	status: {
+		fontSize: 12,
+		color: '#444'
+	}
 })
 
 export default Transaction
