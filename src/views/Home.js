@@ -1,11 +1,16 @@
 import React from 'react'
-import { Text } from 'react-native'
 import {
 	createBottomTabNavigator,
 	createMaterialTopTabNavigator
 } from 'react-navigation'
+import { StyleSheet } from 'react-native'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { Dashboard, Expenses, Incomes } from './'
+import firebase from 'react-native-firebase'
+import {
+	Dashboard,
+	Expenses,
+	Incomes
+} from './'
 
 const icons = {
 	Dashboard: 'home',
@@ -42,8 +47,29 @@ export default createBottomTabNavigator(
 			inactiveTintColor: '#AAA',
 			showLabel: false
 		},
-		navigationOptions: () => ({
-			header: null
-		})
+		navigationOptions: ({ navigation }) => {
+			const logout = async () => {
+				await firebase.auth().signOut()
+
+				navigation.navigate('Splash')
+			}
+			return {
+				title: 'Bills',
+				headerTitleStyle: {
+					fontFamily: 'Roboto'
+				},
+				headerRight: (
+					<Icon style={styles.headerButton} name='sign-out-alt' color='#666' size={20} onPress={logout} />
+				)
+			}
+		}
 	}
 )
+
+const styles = StyleSheet.create({
+	headerButton: {
+		paddingHorizontal: 16,
+		height: '100%',
+		textAlignVertical: 'center'
+	}
+})

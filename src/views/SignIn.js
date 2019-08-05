@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react'
+import React, { useState } from 'react'
 import {
 	View,
 	Text,
@@ -11,14 +11,13 @@ import firebase from 'react-native-firebase'
 const SignIn = ({ navigation }) => {
 	const [email, setEmail] = useState('')
 	const [password, setPassword] = useState('')
-	const [loading, setLoading] = useState(false)
 	const [error, setError] = useState()
 
 	const login = async (email, password) => {
 		try {
-			const credencial = await firebase.auth().signInWithEmailAndPassword(email, password)
+			await firebase.auth().signInWithEmailAndPassword(email, password)
 
-			navigation.navigate('Main')
+			navigation.navigate('Splash')
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/invalid-email':

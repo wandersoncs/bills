@@ -3,7 +3,7 @@ import {
 	UPDATE_INCOME,
 	DELETE_INCOME,
 	LOAD_INCOMES
-} from '../actions/actions-types'
+} from '../actions/actionsTypes'
 
 const initialState = {
 	incomes: [],

@@ -1,10 +1,22 @@
 import React, { useEffect, useState, useRef } from 'react'
-import { Text, View, StyleSheet, TextInput, DatePickerAndroid, Switch, TouchableHighlight } from 'react-native'
+import {
+	Text,
+	View,
+	StyleSheet,
+	TextInput,
+	DatePickerAndroid,
+	Switch,
+	TouchableHighlight
+} from 'react-native'
 import moment from 'moment'
 import { useDispatch } from 'react-redux'
 import { TextInputMask } from 'react-native-masked-text'
 import Icon from 'react-native-vector-icons/FontAwesome5'
-import { createIncome, updateIncome, deleteIncome } from '../store/actions/incomes-actions'
+import {
+	createIncome,
+	updateIncome,
+	deleteIncome
+} from '../store/actions/incomesActions'
 
 const NewIncome = ({ navigation }) => {
 	const [description, setDescription] = useState('')

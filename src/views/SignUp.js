@@ -16,10 +16,9 @@ const SignUp = ({ navigation }) => {
 
 	const signUp = async (email, password) => {
 		try {
-			const credential = await firebase.auth().createUserWithEmailAndPassword(email, password)
+			await firebase.auth().createUserWithEmailAndPassword(email, password)
 
-
-			navigation.navigate('Main')
+			navigation.navigate('Splash')
 		} catch (error) {
 			switch (error.code) {
 				case 'auth/invalid-email':

@@ -7,7 +7,7 @@ import {
 	UPDATE_EXPENSE_ERROR,
 	DELETE_EXPENSE_ERROR,
 	LOAD_EXPENSES_ERROR
-} from './actions-types'
+} from './actionsTypes'
 
 const createExpense = expense => async (dispatch, getState, firebase) => {
 	const { userReducer } = getState()

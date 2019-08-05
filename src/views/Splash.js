@@ -1,8 +1,12 @@
 import React, { useEffect } from 'react'
-import { ActivityIndicator, View, StyleSheet } from 'react-native'
+import {
+	ActivityIndicator,
+	View,
+	StyleSheet
+} from 'react-native'
 import firebase from 'react-native-firebase'
 import { useDispatch } from 'react-redux'
-import { setUser } from '../store/actions/user-actions'
+import { setUser } from '../store/actions/userActions'
 
 const Splash = ({ navigation }) => {
 	const dispatch = useDispatch()

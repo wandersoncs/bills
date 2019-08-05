@@ -1,4 +1,7 @@
-import { SET_USER, DELETE_USER } from '../actions/actions-types'
+import {
+	SET_USER,
+	DELETE_USER
+} from '../actions/actionsTypes'
 
 const initialState = {
 	user: null

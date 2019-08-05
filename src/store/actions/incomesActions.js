@@ -7,7 +7,7 @@ import {
 	UPDATE_INCOME_ERROR,
 	DELETE_INCOME_ERROR,
 	LOAD_INCOMES_ERROR
-} from './actions-types'
+} from './actionsTypes'
 
 const createIncome = income => async (dispatch, getState, firebase) => {
 	const { userReducer } = getState()

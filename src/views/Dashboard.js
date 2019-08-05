@@ -1,11 +1,18 @@
 import React, { useEffect, useState } from 'react'
-import { Text, View, StyleSheet, ScrollView, StatusBar, TouchableHighlight } from 'react-native'
+import {
+	Text,
+	View,
+	StyleSheet,
+	ScrollView,
+	StatusBar,
+	TouchableHighlight
+} from 'react-native'
 import { useSelector, useDispatch } from 'react-redux'
 import ActionButton from 'react-native-action-button'
 import Icon from 'react-native-vector-icons/Feather'
 import { toLocaleString } from 'number-locale-string'
-import { loadExpenses } from '../store/actions/expenses-actions'
-import { loadIncomes } from '../store/actions/incomes-actions'
+import { loadExpenses } from '../store/actions/expensesActions'
+import { loadIncomes } from '../store/actions/incomesActions'
 import DonutChart from '../components/DonutChart'
 
 const Dashboard = ({ navigation }) => {
@@ -16,19 +23,6 @@ const Dashboard = ({ navigation }) => {
 	const incomes = useSelector(store => store.incomesReducer.incomes)
 
 	const dispatch = useDispatch()
-
-	const data = [
-		{
-			value: 10,
-			svg: { fill: 'blue' },
-			key: 'incomes'
-		},
-		{
-			value: 20,
-			svg: { fill: 'red' },
-			key: 'expenses'
-		}
-	]
 
 	useEffect(() => {
 		setExpensesAmount(expenses.reduce((sum, { value }) => sum + value, 0))

@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react'
-import { Text, View, FlatList, StyleSheet, ScrollView, StatusBar } from 'react-native'
+import React from 'react'
+import {
+	View,
+	StyleSheet,
+	ScrollView
+} from 'react-native'
 import { useSelector } from 'react-redux'
 import ActionButton from 'react-native-action-button'
 import Transaction from '../components/Transaction'
+import { INCOME } from '../constants'
 
 const Incomes = ({ navigation }) => {
 	const incomes = useSelector(store => store.incomesReducer.incomes)
@@ -18,7 +23,7 @@ const Incomes = ({ navigation }) => {
 			date={item.date}
 			description={item.description}
 			done={item.received}
-			type={item.type}
+			type={INCOME}
 			value={item.value}
 			onEdit={editTransaction}
 		/>
@@ -30,6 +35,7 @@ const Incomes = ({ navigation }) => {
 
 	return (
 		<View style={styles.container}>
+
 			<ScrollView style={styles.scrollview}>
 				{renderItems(incomes)}
 			</ScrollView>
@@ -47,8 +53,6 @@ const styles = StyleSheet.create({
 	container: {
 		flex: 1,
 		justifyContent: 'center'
-	},
-	scrollview: {
 	}
 })
 

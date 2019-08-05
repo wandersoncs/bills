@@ -3,7 +3,7 @@ import {
 	UPDATE_EXPENSE,
 	DELETE_EXPENSE,
 	LOAD_EXPENSES
-} from '../actions/actions-types'
+} from '../actions/actionsTypes'
 
 const initialState = {
 	expenses: [],

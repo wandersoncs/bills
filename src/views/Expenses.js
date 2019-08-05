@@ -1,8 +1,13 @@
-import React, { useEffect } from 'react'
-import { Text, View, FlatList, StyleSheet, ScrollView, StatusBar } from 'react-native'
+import React from 'react'
+import {
+	View,
+	StyleSheet,
+	ScrollView
+} from 'react-native'
 import { useSelector } from 'react-redux'
 import ActionButton from 'react-native-action-button'
 import Transaction from '../components/Transaction'
+import { EXPENSE } from '../constants'
 
 const Incomes = ({ navigation }) => {
 	const expenses = useSelector(store => store.expensesReducer.expenses)
@@ -18,7 +23,7 @@ const Incomes = ({ navigation }) => {
 			date={item.date}
 			description={item.description}
 			done={item.paid}
-			type={item.type}
+			type={EXPENSE}
 			value={item.value}
 			onEdit={editTransaction}
 		/>
